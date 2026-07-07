@@ -21,14 +21,23 @@ DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__
 
 
 def load_pool(path: str = None) -> List[dict]:
+    """Load the reference pool from emails.jsonl, or fall back to the embedded
+    module (src/_pool_data.py) if the data file isn't present (e.g. on serverless
+    deployments that bundle imported modules but not loose data files)."""
     path = path or os.path.join(DATA_DIR, "emails.jsonl")
-    rows = []
-    with open(path, encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if line:
-                rows.append(json.loads(line))
-    return rows
+    try:
+        rows = []
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    rows.append(json.loads(line))
+        if rows:
+            return rows
+    except FileNotFoundError:
+        pass
+    from ._pool_data import REFERENCE
+    return [dict(r) for r in REFERENCE]
 
 
 class Retriever:

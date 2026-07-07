@@ -1,0 +1,4 @@
+[tool.vercel]
+# Vercel's Python runtime uses a single declared entrypoint. Our handler
+# (a BaseHTTPRequestHandler subclass) serves both the UI and the JSON API.
+entrypoint = "api.suggest:handler"

@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "api/suggest.py": {
-      "includeFiles": "{src,data}/**",
+      "includeFiles": "{src/**,data/**,index.html}",
       "maxDuration": 60
     }
   }
