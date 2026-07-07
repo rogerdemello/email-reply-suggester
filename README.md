@@ -9,8 +9,12 @@ The generator is deliberately simple and sensible. The bulk of the effort went i
 real quality, not just a number**, since that is what the challenge weights most heavily.
 
 The results committed in this repo come from a real live NVIDIA NIM run
-(`meta/llama-3.1-8b-instruct`): **overall 4.13 / 5, 100% pass rate, mean similarity
-0.81**, with the full metric-validation suite passing (details in section 3).
+(`meta/llama-3.1-8b-instruct`): **overall 4.09 / 5, 100% pass rate, mean similarity
+0.82**, with the full metric-validation suite passing (details in section 3).
+
+There is also a **live demo** you can deploy on Vercel (a web page plus a serverless
+API) so a reviewer can paste an email and see the suggested reply and its scores in the
+browser. See [Deployment](#deployment).
 
 ---
 
@@ -20,6 +24,7 @@ The results committed in this repo come from a real live NVIDIA NIM run
 - [1. The dataset](#1-the-dataset)
 - [2. The response generator (Gen AI)](#2-the-response-generator-gen-ai)
 - [3. Measuring accuracy (the core)](#3-measuring-accuracy-the-core)
+- [Deployment](#deployment)
 - [Repository layout](#repository-layout)
 - [Configuration](#configuration)
 - [Limitations](#limitations-honest)
@@ -197,13 +202,47 @@ A number is worthless if we cannot trust it. `src/meta_eval.py` (run with
 
 **Results from the committed live run** (`results/meta_eval.md`):
 
-- Discrimination holds: `gold 4.35 > truncated 4.15 > {generic 3.00, offtopic 3.01}`.
-- Convergent validity: Spearman rho = 0.60 (healthy positive-but-imperfect).
-- Reliability: 0.12 mean change on re-run (stable).
+- Discrimination holds: `gold 4.30 > truncated 4.13 > {generic 3.00, offtopic 3.03}`.
+- Convergent validity: Spearman rho = 0.62 (healthy positive-but-imperfect).
+- Reliability: 0.03 mean change on re-run (stable).
 
 This is the honest core of the submission: the accuracy system is not just "ask an LLM
 for a score". It is a score whose validity is measured (it separates good from bad),
 cross-checked (two signals agree), and stable (low variance).
+
+---
+
+## Deployment
+
+A lightweight live demo ships with the repo and is designed for **Vercel**:
+
+- `index.html` - a self-contained web UI (no external dependencies). Paste an email,
+  get the suggested reply plus the five per-dimension scores and reasons.
+- `api/suggest.py` - a Python serverless function. `POST /api/suggest` with
+  `{"subject": "...", "email": "..."}` returns the reply, what it was grounded on, and
+  the evaluation. For a live email there is no human gold reply, so the judge scores it
+  against the most similar past reply as the reference (flagged in `reference_note`).
+- `vercel.json` bundles `src/` and `data/` into the function and allows up to 60s per
+  request (LLM calls can be slow on a cold start).
+
+The function has no heavy dependencies (the retriever and similarity fallback are
+pure-Python; only the `openai` SDK is required), so the bundle stays small and cold
+starts are quick.
+
+**Deploy steps:**
+
+1. On [vercel.com](https://vercel.com), "Add New Project" and import the GitHub repo
+   `rogerdemello/email-reply-suggester`.
+2. In the project's **Settings -> Environment Variables**, add `NVIDIA_API_KEY` (and
+   optionally `GEN_MODEL`, `JUDGE_MODEL`, `EMBED_MODEL`). The key is never in the repo.
+3. Deploy. The UI is served at `/` and the API at `/api/suggest`.
+
+Or from the CLI: `npm i -g vercel`, then `vercel` (preview) / `vercel --prod`, setting
+the env var with `vercel env add NVIDIA_API_KEY`.
+
+Locally you can serve the same UI against a live key with any static server plus the
+function, but the simplest local check is the pipeline (`python run.py`) or
+`vercel dev`.
 
 ---
 
@@ -215,12 +254,16 @@ data/emails.jsonl       30 reference (email -> reply) pairs
 data/test_set.jsonl     12 held-out emails + gold reply + human quality note
 src/config.py           env-driven config (models, keys, weights, thresholds)
 src/llm.py              NVIDIA NIM (OpenAI-compatible) client + mock switch
+src/textsim.py          pure-Python TF-IDF + cosine (no heavy deps)
 src/retriever.py        TF-IDF retrieval over the past-email pool
 src/generator.py        retrieval-augmented few-shot reply generation
 src/evaluator.py        five-dimension LLM-judge rubric + semantic similarity  (core)
 src/meta_eval.py        validates the metric (controls, convergence, reliability)
 src/mock_backend.py     deterministic no-key stand-in for smoke tests
 run.py                  end-to-end: generate -> evaluate -> report [-> meta-eval]
+api/suggest.py          Vercel serverless function: POST /api/suggest
+index.html              self-contained web UI for the live demo
+vercel.json             Vercel build/runtime config (bundles src + data)
 results/                committed outputs from a real live NIM run (banner-stamped)
 ```
 

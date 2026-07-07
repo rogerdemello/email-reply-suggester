@@ -5,43 +5,43 @@
     "subject": "Charged twice this month",
     "email": "I see two identical charges of $199 on my statement this month. I only have one subscription. Please explain.",
     "gold_reply": "Hi,\n\nThanks for flagging this - a duplicate $199 charge shouldn't happen and I'm sorry for the worry. I've checked your account: there's only one active subscription, and the second charge is a duplicate from a payment retry, not a second plan. I've refunded the extra $199 in full; it'll be back on your card within 5-7 business days and you'll get a confirmation email. Nothing is needed on your end. Do let me know once you see it land.\n\nBest,\nSupport Team",
-    "generated_reply": "Hi there,\n\nThanks for bringing this to our attention. I've checked on the issue and it looks like there was a duplicate charge processed due to a temporary system glitch. I've cancelled the extra charge and you'll only be charged the original $199 for this month. You can expect to see the corrected amount on your next statement. If you have any other questions or concerns, feel free to ask.\n\nBest,\nSupport Team",
+    "generated_reply": "Hi,\n\nThanks for bringing this to our attention. I've checked on the issue and it seems there was a duplicate charge error on our end. This has been reversed, and you won't be charged again for the duplicate amount. I've also added a note to your account to prevent this from happening in the future. If you have any further questions or concerns, please don't hesitate to reach out. I'll also send you a confirmation email once the reversal is complete.\n\nBest,\nSupport Team",
     "retrieved": [
       {
         "id": "ref-001",
         "category": "billing",
-        "similarity": 0.34
+        "similarity": 0.188
+      },
+      {
+        "id": "ref-029",
+        "category": "feature_request",
+        "similarity": 0.104
       },
       {
         "id": "ref-019",
         "category": "complaint",
-        "similarity": 0.141
-      },
-      {
-        "id": "ref-005",
-        "category": "refund",
-        "similarity": 0.127
+        "similarity": 0.086
       }
     ],
     "evaluation": {
       "dimensions": {
         "intent_addressed": 4,
-        "factual_grounding": 5,
+        "factual_grounding": 4,
         "completeness": 3,
         "tone": 5,
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "The reply addresses the customer's concern about the duplicate charge, but doesn't explicitly state that it's a payment retry.",
-        "factual_grounding": "The reply is consistent with the context and gold reply, with no invented facts or policies.",
-        "completeness": "The reply doesn't mention the refund or confirmation email, which are important details for the customer.",
-        "tone": "The tone is professional, empathetic, and apologetic, which is suitable for this situation.",
-        "actionability": "The reply provides clear next steps, but doesn't explicitly state that the customer will see the corrected amount on their next statement."
+        "intent_addressed": "The SUGGESTED REPLY addresses the customer's concern about the duplicate charge, but it doesn't explicitly state that the second charge was a payment retry.",
+        "factual_grounding": "The SUGGESTED REPLY claims that the duplicate charge error was reversed, but it doesn't provide any evidence or context to support this claim. It also doesn't mention the customer being refunded the extra $199.",
+        "completeness": "The SUGGESTED REPLY doesn't explicitly mention that the customer will receive a confirmation email once the reversal is complete, which is mentioned in the GOLD REPLY.",
+        "tone": "The tone of the SUGGESTED REPLY is professional and empathetic, which is suitable for this situation.",
+        "actionability": "The SUGGESTED REPLY provides clear next steps, but it doesn't explicitly state what the customer should do if they have further questions or concerns."
       },
-      "verdict": "Usable after light edits, as it needs to be more specific about the reason for the duplicate charge and the refund process.",
-      "overall": 4.15,
+      "verdict": "Usable after light edits, as it needs to be more specific about the reason for the duplicate charge and the resolution.",
+      "overall": 3.9,
       "pass": true,
-      "semantic_similarity": 0.8545,
+      "semantic_similarity": 0.8206,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,
@@ -60,43 +60,43 @@
     "subject": "Dashboard shows wrong numbers",
     "email": "Our dashboard total says 4,200 but the underlying report clearly adds up to 4,800. The numbers don't match and my boss is asking. Help!",
     "gold_reply": "Hi,\n\nThanks for the clear example - a dashboard total that disagrees with the underlying report is exactly the kind of thing we want to catch. The most common cause is a filter or date range on the dashboard tile that isn't applied to the report view (for instance, the tile excluding archived or draft records). Could you check whether the dashboard tile has a filter the report doesn't? If they match and it still disagrees, reply with the tile name and I'll have our team reconcile it directly - a 600-unit gap shouldn't be there. I know your boss is waiting, so I'll prioritise this.\n\nBest,\nSupport Team",
-    "generated_reply": "Hi,\n\nSorry to hear the dashboard numbers aren't matching the report. This discrepancy is usually caused by a data refresh delay or a cached version of the dashboard. Two quick things to try: (1) refresh the dashboard by clicking the refresh button in the top right corner, and (2) if that doesn't work, try opening the dashboard in a new private window or clearing your browser cache. If the numbers still don't match, reply with a screenshot of the report and I'll investigate the underlying data to get to the bottom of it.\n\nBest,\nSupport Team",
+    "generated_reply": "Hi,\n\nSorry that's causing confusion with your boss. This discrepancy is usually due to a delayed sync between the report and the dashboard. Two quick things to try: (1) refresh the dashboard by clicking the refresh button in the top right corner, and (2) if that doesn't work, try re-running the report and re-syncing the dashboard by clicking the 'Sync' button at the bottom of the report page. If it still shows the wrong numbers after trying these, reply with your account email and I'll pull the report data and get our engineers on it right away.\n\nBest,\nSupport Team",
     "retrieved": [
-      {
-        "id": "ref-001",
-        "category": "billing",
-        "similarity": 0.104
-      },
       {
         "id": "ref-007",
         "category": "bug",
-        "similarity": 0.099
+        "similarity": 0.045
       },
       {
-        "id": "ref-012",
-        "category": "access",
-        "similarity": 0.092
+        "id": "ref-004",
+        "category": "refund",
+        "similarity": 0.045
+      },
+      {
+        "id": "ref-001",
+        "category": "billing",
+        "similarity": 0.042
       }
     ],
     "evaluation": {
       "dimensions": {
         "intent_addressed": 4,
-        "factual_grounding": 4,
+        "factual_grounding": 5,
         "completeness": 3,
         "tone": 5,
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "The suggested reply addresses the specific question of the dashboard numbers not matching the report, but doesn't directly address the underlying cause of the discrepancy.",
-        "factual_grounding": "The suggested reply makes claims about data refresh delay and cached versions of the dashboard, but these are not explicitly stated in the context or the gold reply.",
-        "completeness": "The suggested reply doesn't explicitly address the customer's request to help their boss, and doesn't offer to prioritize the issue.",
-        "tone": "The suggested reply maintains a professional and empathetic tone, suitable for the situation.",
-        "actionability": "The suggested reply provides clear next steps for the customer to try, but doesn't offer a clear resolution or a way to escalate the issue."
+        "intent_addressed": "The suggested reply addresses the specific question of the discrepancy between the dashboard and report, but doesn't directly address the potential filter or date range issue mentioned in the gold reply.",
+        "factual_grounding": "The suggested reply's claims are consistent with the context and gold reply, with no invented facts or policies.",
+        "completeness": "The suggested reply doesn't explicitly address the potential filter or date range issue, which is a key point in the gold reply.",
+        "tone": "The suggested reply's tone is professional, empathetic, and appropriate for the situation.",
+        "actionability": "The suggested reply provides clear next steps for the customer to try and resolve the issue, but could be more explicit in its instructions."
       },
-      "verdict": "Usable after light edits, as it needs to be more specific about the cause of the discrepancy and offer a clearer resolution.",
-      "overall": 3.9,
+      "verdict": "Usable after light edits, as it needs to be more comprehensive in addressing the potential filter or date range issue.",
+      "overall": 4.15,
       "pass": true,
-      "semantic_similarity": 0.6468,
+      "semantic_similarity": 0.7103,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,
@@ -115,22 +115,22 @@
     "subject": "Refund after price increase",
     "email": "You raised prices without warning and charged the new higher rate. I want a refund of the difference and an explanation.",
     "gold_reply": "Hi,\n\nI understand the frustration of seeing a higher charge without warning, and I'm sorry the price change wasn't communicated clearly to you. Here's what I can do: I've refunded the difference between the old and new rate for this charge, and I've kept you on your previous rate for the next two billing cycles so nothing changes suddenly while you decide. For transparency, the increase reflects new features added this year; I'm happy to walk through what changed so you can judge the value. The refunded difference will reach your card in 5-7 business days.\n\nBest,\nSupport Team",
-    "generated_reply": "Hi,\n\nSorry to hear you felt caught off guard by the price change. We did notify all active customers via email about the price increase, but I understand it might not have reached you. I've processed a refund for the difference between the old and new rates for this month. You'll receive a confirmation email once it's processed, usually within 5-7 business days. We're always looking to improve our communication and would appreciate any feedback on how we can better keep you informed.\n\nBest,\nSupport Team",
+    "generated_reply": "Hi,\n\nThanks for sharing your concerns about the price change. I understand it can be jarring when rates increase unexpectedly. I've processed a refund for the difference between your original and new rate for this month - it'll appear on your card in 5-7 business days. As for the explanation, I can point you to our announcement email (sent to all users) which outlines the reasoning behind the change. If you have any specific feedback or questions, I'm here to listen.\n\nBest,\nSupport Team",
     "retrieved": [
       {
         "id": "ref-005",
         "category": "refund",
-        "similarity": 0.322
+        "similarity": 0.239
       },
       {
         "id": "ref-004",
         "category": "refund",
-        "similarity": 0.23
+        "similarity": 0.227
       },
       {
         "id": "ref-016",
         "category": "feature_request",
-        "similarity": 0.128
+        "similarity": 0.111
       }
     ],
     "evaluation": {
@@ -142,16 +142,16 @@
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "The reply addresses the customer's request for a refund and explanation, but doesn't explicitly state that the customer will be kept on their previous rate for the next billing cycle.",
-        "factual_grounding": "The reply's claims are consistent with the context and gold reply, with no invented prices, policies, timelines, or commitments.",
-        "completeness": "The reply doesn't explicitly address the customer's request for an explanation of the price increase, but does mention that the company is looking to improve their communication.",
-        "tone": "The reply is professional, empathetic, and apologetic, which is suitable for this situation.",
-        "actionability": "The reply provides clear next steps, including a confirmation email and a refund within 5-7 business days, but doesn't explicitly state that the customer's account will stay active until the end of the current period."
+        "intent_addressed": "The reply addresses the customer's concern about the price change and the request for a refund, but doesn't explicitly state that the customer will be kept on their previous rate for the next billing cycle.",
+        "factual_grounding": "The reply is consistent with the context and the gold reply, with no invented facts or claims.",
+        "completeness": "The reply doesn't explicitly address the customer's request for an explanation of the price change, only pointing to an announcement email.",
+        "tone": "The reply is professional, empathetic, and appropriate for the situation.",
+        "actionability": "The reply provides clear next steps, but doesn't explicitly state that the customer will be kept on their previous rate for the next billing cycle."
       },
-      "verdict": "Usable after light edits, as it addresses the customer's request but could benefit from a more explicit explanation of the price increase and a clearer statement on the customer's account status.",
+      "verdict": "Usable after light edits.",
       "overall": 4.15,
       "pass": true,
-      "semantic_similarity": 0.8841,
+      "semantic_similarity": 0.904,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,
@@ -170,22 +170,22 @@
     "subject": "Can't reset my password",
     "email": "The password reset email never arrives. I've tried three times and checked spam. I really need in today.",
     "gold_reply": "Hi,\n\nSorry you're stuck - let's fix this today. If the reset email isn't arriving after three tries and it's not in spam, the usual culprits are (1) the address on file differs slightly from the one you're typing, or (2) your mail server is delaying our messages. To get you in now, I've triggered a fresh reset from my side and, as a backup, generated a one-time secure sign-in link which I'm sending to the verified email on your account. Use whichever arrives first. If neither shows up in five minutes, reply here and I'll verify your identity and set a temporary password with you directly.\n\nBest,\nSupport Team",
-    "generated_reply": "Hi,\n\nSorry to hear the password reset email isn't reaching you. For security reasons, our password reset emails are sent from a specific domain (support@yourcompany.com), so it's possible it's being flagged as spam. Can you please check your spam folder for an email from that domain? If it's not there, I can manually send a password reset link to the email address associated with your account. If you're still having trouble, reply here and I'll investigate further.\n\nBest,\nSupport Team",
+    "generated_reply": "Hi,\n\nSorry to hear the password reset isn't working out. I've just checked our logs and it looks like the emails are being sent successfully. To troubleshoot further, I'd like to try a different approach: could you please reply to this email with the email address associated with your account, and I'll send you a manual password reset link directly? This way we can bypass any potential email delivery issues. I'll also keep an eye on this thread in case you need any further assistance.\n\nBest,\nSupport Team",
     "retrieved": [
       {
         "id": "ref-026",
         "category": "bug",
-        "similarity": 0.256
+        "similarity": 0.112
       },
       {
         "id": "ref-024",
         "category": "howto",
-        "similarity": 0.232
+        "similarity": 0.108
       },
       {
         "id": "ref-011",
         "category": "access",
-        "similarity": 0.203
+        "similarity": 0.077
       }
     ],
     "evaluation": {
@@ -197,16 +197,16 @@
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "It addresses the specific question of the password reset email not arriving, but doesn't fully handle the request as it doesn't provide a clear alternative solution.",
-        "factual_grounding": "It makes no claims that are inconsistent with the context or gold reply.",
-        "completeness": "It doesn't cover the possibility of the email address on file differing slightly from the one being typed, and it doesn't provide a clear alternative solution for the customer.",
-        "tone": "It's professional, empathetic, and suitable for the situation.",
-        "actionability": "It provides clear next steps, but the customer is left waiting for a manual password reset link which may not be the most efficient solution."
+        "intent_addressed": "The reply addresses the customer's issue with password reset, but doesn't directly resolve it.",
+        "factual_grounding": "The reply doesn't make any claims that could be considered invented or inconsistent with the context.",
+        "completeness": "The reply doesn't provide a clear resolution or next steps for the customer to act on, and asks the customer to reply with their email address.",
+        "tone": "The tone is professional and empathetic, suitable for a customer support situation.",
+        "actionability": "The reply provides clear next steps for the customer to reply with their email address, but doesn't provide a clear resolution or resolution timeline."
       },
-      "verdict": "Usable after light edits, as it needs to be more comprehensive in its solution and provide a clear alternative to the manual password reset link.",
+      "verdict": "Usable after light edits, as it needs to provide a clear resolution or next steps for the customer to act on.",
       "overall": 4.15,
       "pass": true,
-      "semantic_similarity": 0.8801,
+      "semantic_similarity": 0.8931,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,
@@ -225,43 +225,43 @@
     "subject": "Comparing you vs a competitor",
     "email": "We're deciding between you and CompetitorX. What makes you different, and can you match their price?",
     "gold_reply": "Hi,\n\nHappy to help you decide - and I'll be straight rather than just bashing the competition. Where teams pick us over CompetitorX is usually (1) faster setup with guided onboarding, (2) automations that don't require a technical admin, and (3) responsive human support (you're talking to a real person right now). On price: tell me the CompetitorX quote you're comparing and your team size, and I'll see what we can do - we have room to be competitive, and there's added value in migration help and onboarding we include. Would a short call to map this to your specific needs help?\n\nBest,\nSupport Team",
-    "generated_reply": "Hi,\n\nThanks for considering us. I'd be happy to walk you through what sets us apart from CompetitorX. Our platform is built with a focus on scalability and ease of use, which has led to a more seamless user experience and faster time-to-value for our customers. As for pricing, I'd need to verify the exact match for CompetitorX's plan, but I can offer you a custom quote based on your specific needs. Would you like me to send over a quote comparison and discuss further?\n\nBest,\nSupport Team",
+    "generated_reply": "Hi,\n\nThanks for considering us in your evaluation between us and CompetitorX. What sets us apart is our focus on [specific feature or benefit unique to your product]. If you'd like to discuss how that impacts your workflow, I'd be happy to set up a call. As for pricing, I'd need to know more about your specific use case to provide a fair comparison. Could you share some details about your team size and expected usage? In the meantime, I can offer a 14-day trial with all features unlocked so you can see the difference firsthand.\n\nBest,\nSupport Team",
     "retrieved": [
       {
         "id": "ref-030",
         "category": "onboarding",
-        "similarity": 0.263
+        "similarity": 0.122
       },
       {
-        "id": "ref-029",
-        "category": "feature_request",
-        "similarity": 0.0
+        "id": "ref-013",
+        "category": "sales",
+        "similarity": 0.093
       },
       {
-        "id": "ref-002",
-        "category": "billing",
-        "similarity": 0.0
+        "id": "ref-022",
+        "category": "howto",
+        "similarity": 0.053
       }
     ],
     "evaluation": {
       "dimensions": {
         "intent_addressed": 4,
-        "factual_grounding": 5,
+        "factual_grounding": 4,
         "completeness": 3,
         "tone": 5,
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "It addresses the question of what makes the service different and offers a custom quote, but doesn't directly address the price comparison request.",
-        "factual_grounding": "The reply is consistent with the context and doesn't invent any facts.",
-        "completeness": "It doesn't explicitly address the customer's request for a price comparison with CompetitorX.",
-        "tone": "The tone is professional and polite.",
-        "actionability": "The reply offers a clear next step of sending a quote comparison, but doesn't explicitly ask the customer to provide more information."
+        "intent_addressed": "The reply addresses the customer's question about what makes the product different and offers a call to discuss, but doesn't directly answer the price comparison request.",
+        "factual_grounding": "The reply mentions a specific feature, but doesn't provide enough context to verify its uniqueness or relevance to the customer's needs.",
+        "completeness": "The reply doesn't directly address the customer's request for a price comparison, and the offer of a 14-day trial is not a clear next step for the customer.",
+        "tone": "The tone is professional and polite, with a clear offer to help the customer.",
+        "actionability": "The reply offers a clear next step (a call to discuss the customer's workflow) but doesn't provide a clear resolution or next step for the price comparison request."
       },
-      "verdict": "Usable after light edits, specifically to address the price comparison request and provide more context for the custom quote.",
-      "overall": 4.15,
+      "verdict": "Usable after light edits, as it addresses the customer's question but could be improved with more specific information and a clearer next step for the price comparison request.",
+      "overall": 3.9,
       "pass": true,
-      "semantic_similarity": 0.8262,
+      "semantic_similarity": 0.8198,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,
@@ -280,22 +280,22 @@
     "subject": "Need Salesforce integration",
     "email": "Do you integrate with Salesforce? It's a dealbreaker for us if you don't.",
     "gold_reply": "Hi,\n\nGreat question, and I appreciate you naming it as a dealbreaker - let me be precise so you can decide with confidence. We offer a native two-way Salesforce integration on the Business plan (sync contacts, activities, and custom fields), plus a Zapier connector and a REST API if you need something bespoke. If you can share the specific objects and direction you need to sync, I'll confirm it's covered before you commit - and I'm happy to set up a live demo against a Salesforce sandbox so you can see it working with your own data.\n\nBest,\nSupport Team",
-    "generated_reply": "Hi,\n\nYes, we do integrate with Salesforce - our users can sync contacts, accounts, and opportunities in both directions. To get started, head to Settings > Integrations > Salesforce and follow the setup wizard. If you need any help or have specific requirements (e.g., custom fields or API keys), just let me know and I'll guide you through it.\n\nBest,\nSupport Team",
+    "generated_reply": "Hi,\n\nYes, we do integrate with Salesforce - our users can connect their org to ours in Settings > Integrations. We support both OAuth and API-based connections, and our support team can help you set it up if you need a hand. If you have any specific requirements or questions about the integration, feel free to let me know and I'll be happy to help.\n\nBest,\nSupport Team",
     "retrieved": [
-      {
-        "id": "ref-011",
-        "category": "access",
-        "similarity": 0.19
-      },
       {
         "id": "ref-002",
         "category": "billing",
-        "similarity": 0.181
+        "similarity": 0.054
       },
       {
         "id": "ref-022",
         "category": "howto",
-        "similarity": 0.181
+        "similarity": 0.047
+      },
+      {
+        "id": "ref-011",
+        "category": "access",
+        "similarity": 0.044
       }
     ],
     "evaluation": {
@@ -307,16 +307,16 @@
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "The suggested reply directly answers the customer's question about Salesforce integration.",
-        "factual_grounding": "The suggested reply's claims about the integration are consistent with the context and the Gold reply.",
-        "completeness": "The suggested reply does not offer to set up a live demo or confirm specific requirements, which are mentioned in the Gold reply.",
-        "tone": "The suggested reply's tone is professional, empathetic, and helpful.",
-        "actionability": "The suggested reply provides clear next steps, but does not explicitly mention the need for specific requirements or a live demo."
+        "intent_addressed": "The reply directly addresses the customer's question about Salesforce integration.",
+        "factual_grounding": "The claims made in the reply are consistent with the context and the Gold reply.",
+        "completeness": "The reply covers the customer's question, but does not offer to set up a live demo or confirm specific objects and direction for syncing.",
+        "tone": "The tone is professional, empathetic, and polite, suitable for this situation.",
+        "actionability": "The reply provides clear next steps, but does not offer a specific resolution or a clear path to resolution."
       },
-      "verdict": "Usable after light edits, as it is mostly correct but could benefit from additional details.",
+      "verdict": "Ready to send as-is, with minor adjustments for clarity and concision.",
       "overall": 4.45,
       "pass": true,
-      "semantic_similarity": 0.7607,
+      "semantic_similarity": 0.6929,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,
@@ -335,22 +335,22 @@
     "subject": "Your last reply didn't solve anything",
     "email": "I already contacted you about this bug last week and the 'fix' you suggested didn't work. I'm losing patience.",
     "gold_reply": "Hi,\n\nI'm sorry - when a suggested fix doesn't work and you have to come back, that's on us, not you, and I understand the lost patience. Let's stop guessing. Rather than send another generic step, I'm escalating this straight to our engineering team with your account attached so they can reproduce it directly. To speed that up, could you reply with what you see when the bug happens (a screenshot or the exact error is perfect) and roughly when it last occurred? I'll personally track this to resolution and keep you updated rather than leaving you to chase.\n\nBest,\nSupport Team",
-    "generated_reply": "Hi,\n\nI'm sorry to hear the previous suggestion didn't resolve the issue for you. I'd like to dig deeper into this. Can you please provide me with the exact steps you took and the outcome, as well as any error messages you received? This will help me better understand the problem and escalate it to our engineering team for a more effective solution.\n\nBest,\nSupport Team",
+    "generated_reply": "Hi,\n\nI'm truly sorry that the previous suggestion didn't resolve the issue for you. I'd like to start fresh and get to the bottom of this. Can you please provide more details about the bug, including any error messages you see, and the steps you took when you tried the previous fix? This will help me better understand the situation and work with our engineers to find a solution. I'll also make sure to keep you updated on the progress and involve our team lead if needed. \n\nBest,\nSupport Team",
     "retrieved": [
       {
-        "id": "ref-026",
+        "id": "ref-010",
+        "category": "howto",
+        "similarity": 0.055
+      },
+      {
+        "id": "ref-007",
         "category": "bug",
-        "similarity": 0.173
+        "similarity": 0.047
       },
       {
         "id": "ref-025",
         "category": "billing",
-        "similarity": 0.133
-      },
-      {
-        "id": "ref-030",
-        "category": "onboarding",
-        "similarity": 0.0
+        "similarity": 0.045
       }
     ],
     "evaluation": {
@@ -362,16 +362,16 @@
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "The reply acknowledges the customer's frustration and attempts to address the issue, but it doesn't directly ask for the information needed to escalate the issue.",
-        "factual_grounding": "The reply doesn't make any claims that are inconsistent with the context or the gold reply.",
-        "completeness": "The reply doesn't explicitly ask for a screenshot or the exact error message, which are important details for the engineering team to reproduce the issue.",
-        "tone": "The tone is apologetic, empathetic, and professional, which is suitable for this situation.",
-        "actionability": "The reply doesn't provide a clear next step for the customer, but it does indicate that the issue will be escalated to the engineering team."
+        "intent_addressed": "The reply acknowledges the customer's frustration and offers to start fresh, but doesn't directly address the request to escalate the issue to engineering.",
+        "factual_grounding": "The reply doesn't make any claims that could be considered invented or inconsistent with the context.",
+        "completeness": "The reply doesn't explicitly address the customer's request to escalate the issue to engineering, and also doesn't ask for a screenshot or error message.",
+        "tone": "The reply is apologetic, empathetic, and professional, which is suitable for this situation.",
+        "actionability": "The reply offers to work with the customer to find a solution, but doesn't provide clear next steps or a specific resolution the customer can act on."
       },
-      "verdict": "Usable after light edits, as it needs to be more specific about what information is needed to escalate the issue.",
+      "verdict": "Usable after light edits, as it's mostly correct but could benefit from a more direct response to the customer's request.",
       "overall": 4.15,
       "pass": true,
-      "semantic_similarity": 0.902,
+      "semantic_similarity": 0.9205,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,
@@ -390,43 +390,43 @@
     "subject": "How to give a client view-only access",
     "email": "I want to share a project with an external client but they should only be able to view, not edit anything. Possible?",
     "gold_reply": "Hi,\n\nYes, that's exactly what guest access is for. Go to the project > Share > Invite, enter your client's email, and set their role to 'Viewer'. Viewers can open and read everything in that project but can't edit, comment-to-change, or see your other projects - so it's safe to share externally. If you'd like them to comment without editing, there's a 'Commenter' role too. The invite is a single project, so they'll never have access to the rest of your workspace. Want me to double-check the permissions once you've sent it?\n\nBest,\nSupport Team",
-    "generated_reply": "Hi,\n\nCompletely make sense - sharing with a client without giving them edit access is a common need. Yes, it's possible to do this. You can create a new role with view-only permissions and invite the client to join the project with that role. I can walk you through the steps if you'd like.",
+    "generated_reply": "Hi,\n\nCompletely doable - we have a permission level for exactly that use case. To set up a client view-only access, go to Settings > Team, click 'Add member', and choose the 'Viewer' role. This will let them see all projects and tasks, but not make any changes. If you want to limit their access to a specific project, go to Project settings > Permissions, and add them as a viewer there. If you're still unsure, I can walk you through it step by step.\n\nBest,\nSupport Team",
     "retrieved": [
       {
         "id": "ref-011",
         "category": "access",
-        "similarity": 0.179
+        "similarity": 0.091
       },
       {
         "id": "ref-029",
         "category": "feature_request",
-        "similarity": 0.154
+        "similarity": 0.085
       },
       {
         "id": "ref-028",
         "category": "access",
-        "similarity": 0.096
+        "similarity": 0.079
       }
     ],
     "evaluation": {
       "dimensions": {
         "intent_addressed": 4,
-        "factual_grounding": 5,
+        "factual_grounding": 4,
         "completeness": 3,
         "tone": 5,
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "The reply directly addresses the question of giving a client view-only access, but it doesn't provide the exact steps to do so.",
-        "factual_grounding": "The reply doesn't make any claims that are not consistent with the context or the gold reply.",
-        "completeness": "The reply doesn't cover the specific steps to create a new role with view-only permissions, which is an important part of the customer's ask.",
-        "tone": "The reply is professional and empathetic, which is suitable for this situation.",
-        "actionability": "The reply provides a clear next step of inviting the client to join the project with a specific role, but it doesn't provide the exact steps to create that role."
+        "intent_addressed": "The suggested reply directly addresses the customer's question about giving a client view-only access, but it doesn't perfectly match the customer's request to share a project.",
+        "factual_grounding": "The suggested reply is generally consistent with the context and the gold reply, but it implies that the 'Viewer' role allows access to all projects, which might not be the case.",
+        "completeness": "The suggested reply covers the main request, but it doesn't explicitly address the customer's ask to limit the client's access to a specific project.",
+        "tone": "The tone of the suggested reply is professional, empathetic, and helpful.",
+        "actionability": "The suggested reply provides clear next steps, but it could be more specific and detailed."
       },
-      "verdict": "Usable after light edits, as it needs to provide more specific steps to create a new role with view-only permissions.",
-      "overall": 4.15,
+      "verdict": "Usable after light edits",
+      "overall": 3.9,
       "pass": true,
-      "semantic_similarity": 0.8183,
+      "semantic_similarity": 0.8213,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,
@@ -445,22 +445,22 @@
     "subject": "Everything is broken right now",
     "email": "Nothing is loading. Pages time out. We have a client demo in 30 minutes and I'm panicking.",
     "gold_reply": "Hi,\n\nI hear the panic and a demo in 30 minutes raises the stakes - let's deal with it head-on. We're currently seeing a partial outage causing timeouts, and our team is actively working to restore service; live updates are at status.ourapp.com. For your demo in the next 30 minutes, two safety nets: (1) if you have a recent export or screenshots, a walkthrough of those keeps the demo moving if the app is still slow, and (2) reply with your account and I'll flag it so you're first to know the instant it's back. I'll personally watch this and message you the moment loading is restored. Good luck with the demo - I've got your back on the status side.",
-    "generated_reply": "Hi,\n\nI can imagine how stressful this is, especially with a client demo looming. I've checked our status page and it seems like there's a widespread issue affecting app performance. Our team is actively working on a fix and I'll keep you updated on the progress. In the meantime, I've escalated your situation to our engineers for priority attention. If there's anything specific you need to get working for the demo, please let me know and I'll do my best to help. I'll also reply here as soon as we've got an update on the resolution.\n\nBest,\nSupport Team",
+    "generated_reply": "Hi,\n\nI can imagine the pressure of a demo looming - I'm here to help. It sounds like a widespread issue, and I've checked our status page (status.ourapp.com) which shows a major outage affecting all features. Our team is actively working on a fix and I'll keep you updated here. In the meantime, I recommend reaching out to your client and explaining the situation - we'll get back to you as soon as possible. I'll also reply here once it's resolved, and we can discuss next steps for your demo.\n\nBest,\nSupport Team",
     "retrieved": [
       {
         "id": "ref-021",
         "category": "outage",
-        "similarity": 0.172
+        "similarity": 0.153
       },
       {
         "id": "ref-011",
         "category": "access",
-        "similarity": 0.14
+        "similarity": 0.148
       },
       {
-        "id": "ref-027",
-        "category": "sales",
-        "similarity": 0.111
+        "id": "ref-007",
+        "category": "bug",
+        "similarity": 0.108
       }
     ],
     "evaluation": {
@@ -472,16 +472,16 @@
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "The reply acknowledges the customer's stress and offers to keep them updated, but doesn't explicitly address the request to get the demo working.",
-        "factual_grounding": "The reply is consistent with the context and doesn't make any invented claims.",
-        "completeness": "The reply doesn't explicitly address the customer's request to get the demo working, and doesn't offer a clear alternative solution.",
-        "tone": "The reply is empathetic and professional, acknowledging the customer's stress and offering support.",
-        "actionability": "The reply offers to keep the customer updated, but doesn't provide a clear next step for the customer to take."
+        "intent_addressed": "The reply addresses the customer's panic and the looming demo, but doesn't explicitly offer a solution to get them back in or provide a clear safety net.",
+        "factual_grounding": "The reply is consistent with the context and gold reply, with no invented facts or claims.",
+        "completeness": "The reply doesn't explicitly offer a solution to get the customer back in or provide a clear safety net, and doesn't discuss next steps for the demo.",
+        "tone": "The reply is professional, empathetic, and appropriate for the situation.",
+        "actionability": "The reply provides a clear next step (checking the status page) but doesn't offer a clear resolution or safety net for the customer."
       },
-      "verdict": "Usable after light edits, as it's mostly correct but could benefit from a more explicit solution for the demo.",
+      "verdict": "Usable after light edits, but could benefit from more explicit solutions and safety nets.",
       "overall": 4.15,
       "pass": true,
-      "semantic_similarity": 0.8526,
+      "semantic_similarity": 0.8576,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,
@@ -500,43 +500,43 @@
     "subject": "Webhook payloads changed and broke our code",
     "email": "You changed the webhook payload format and it silently broke our integration. Why weren't we told?",
     "gold_reply": "Hi,\n\nYou're right to be upset - an unannounced payload change that breaks your integration is a process failure on our side, and I'm sorry for the silent breakage and the debugging it cost you. Here's the situation: the change was part of a versioned rollout, but the deprecation notice clearly didn't reach you, which we need to fix. Immediately: you can pin to the previous payload version by setting the 'API-Version' header to the prior date, which restores the old format while you migrate on your own timeline. I'm sending you the full changelog of what changed and, separately, checking why your team wasn't on the notification list so this can't recur. Want me to get an engineer on a call to help you migrate cleanly?\n\nBest,\nSupport Team",
-    "generated_reply": "Hi,\n\nSorry for the disruption to your integration. We do make changes to our API, including webhook payloads, to improve the service and add features. However, we also provide a changelog and release notes with detailed information about these changes, including any breaking changes, so you can plan and adapt accordingly. I'd recommend checking our changelog for the latest updates and our developer documentation for guidance on handling payload changes. If you're still struggling, I'd be happy to help you update your integration.\n\nBest,\nSupport Team",
+    "generated_reply": "Hi,\n\nSorry to hear that the payload change impacted your integration. We usually announce changes like this in our changelog (Settings > Help > Changelog) and via email to all customers, but it looks like we missed you this time. To help you get back on track, I'd like to discuss the new payload format with you and provide some code snippets to help with the update. Can you tell me a bit more about your integration and what specifically broke? That way, I can better understand the issue and guide you through the necessary adjustments.\n\nBest,\nSupport Team",
     "retrieved": [
       {
         "id": "ref-017",
         "category": "integration",
-        "similarity": 0.19
+        "similarity": 0.091
       },
       {
-        "id": "ref-030",
-        "category": "onboarding",
-        "similarity": 0.0
+        "id": "ref-001",
+        "category": "billing",
+        "similarity": 0.045
       },
       {
-        "id": "ref-014",
-        "category": "sales",
+        "id": "ref-002",
+        "category": "billing",
         "similarity": 0.0
       }
     ],
     "evaluation": {
       "dimensions": {
         "intent_addressed": 4,
-        "factual_grounding": 5,
+        "factual_grounding": 4,
         "completeness": 3,
         "tone": 5,
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "The suggested reply acknowledges the disruption and provides a general explanation for the change, but doesn't directly address the customer's concern about not being notified.",
-        "factual_grounding": "The suggested reply is consistent with the context and doesn't invent any facts.",
-        "completeness": "The suggested reply doesn't directly address the customer's question about why they weren't notified, and doesn't offer a clear next step for the customer.",
-        "tone": "The suggested reply is professional and empathetic, acknowledging the disruption and offering help.",
-        "actionability": "The suggested reply provides a clear next step for the customer to check the changelog and developer documentation, but doesn't offer a more concrete solution."
+        "intent_addressed": "The reply addresses the customer's concern about the payload change, but doesn't explicitly acknowledge the process failure or offer a clear solution.",
+        "factual_grounding": "The reply is mostly consistent with the context, but it doesn't explicitly state that the changelog was missed, which is a key point in the gold reply.",
+        "completeness": "The reply doesn't fully address the customer's request for a solution, as it only offers to discuss the new payload format and provide code snippets.",
+        "tone": "The tone is professional, empathetic, and suitable for the situation.",
+        "actionability": "The reply provides a clear next step (discussing the new payload format), but it doesn't offer a clear resolution or a specific action the customer can take."
       },
-      "verdict": "Usable after light edits, as it provides a good starting point but could be improved with more direct addressing of the customer's concerns and a clearer next step.",
-      "overall": 4.15,
+      "verdict": "Usable after light edits, as it needs to acknowledge the process failure and provide a clearer solution.",
+      "overall": 3.9,
       "pass": true,
-      "semantic_similarity": 0.786,
+      "semantic_similarity": 0.827,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,
@@ -555,22 +555,22 @@
     "subject": "Downgrade instead of cancel?",
     "email": "We can't justify the current cost but don't want to fully leave. Is there a cheaper plan we could move to?",
     "gold_reply": "Hi,\n\nI'm really glad you'd rather stay - let's find a fit for your budget instead of losing you. You can move from your current plan to our Starter tier, which keeps the core features most teams rely on at roughly half the cost; you'd lose advanced automations and SSO, but nothing you've created goes away. You can switch anytime from Settings > Billing > Change plan, and the unused portion of your current term is credited toward the cheaper plan. If you tell me which features are must-keeps, I'll confirm Starter covers them before you switch so there are no surprises.\n\nBest,\nSupport Team",
-    "generated_reply": "Hi,\n\nI'm glad you're looking for alternatives. We have a tiered pricing model, and I'd be happy to help you explore options. Can you tell me a bit more about your current plan and what you're using the product for? That way, I can give you a better idea of which plan might be a good fit and we can discuss the details.\n\nBest,\nSupport Team",
+    "generated_reply": "Hi,\n\nSorry to hear you're finding the current cost a stretch. We do have a tiered pricing model that might be a better fit for your team. I'd be happy to walk you through our plans and see if one of them aligns with your budget. Can you tell me a bit more about what you're looking for (e.g., features, user count, any specific requirements)? I can also provide a custom quote for a downgrade to a plan that suits your needs.\n\nBest,\nSupport Team",
     "retrieved": [
       {
         "id": "ref-006",
         "category": "cancellation",
-        "similarity": 0.469
+        "similarity": 0.212
       },
       {
-        "id": "ref-005",
-        "category": "refund",
-        "similarity": 0.102
+        "id": "ref-009",
+        "category": "howto",
+        "similarity": 0.055
       },
       {
-        "id": "ref-020",
-        "category": "complaint",
-        "similarity": 0.094
+        "id": "ref-012",
+        "category": "access",
+        "similarity": 0.052
       }
     ],
     "evaluation": {
@@ -582,16 +582,16 @@
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "It addresses the customer's request to find a cheaper plan, but doesn't directly offer a solution.",
-        "factual_grounding": "It doesn't make any claims that could be considered invented or inconsistent with the context.",
-        "completeness": "It doesn't explicitly address the customer's concern about not wanting to fully leave, and doesn't offer a clear next step.",
-        "tone": "The tone is professional and empathetic, which is suitable for this situation.",
-        "actionability": "It asks the customer for more information, but doesn't provide a clear next step or resolution."
+        "intent_addressed": "The reply acknowledges the customer's concern and offers to help find a more suitable plan, but doesn't directly address the question of downgrading instead of canceling.",
+        "factual_grounding": "The reply doesn't make any claims that are inconsistent with the context or the Gold reply.",
+        "completeness": "The reply doesn't explicitly mention the possibility of switching to a cheaper plan or the process of doing so, which is an important aspect of the customer's request.",
+        "tone": "The reply is polite, empathetic, and professional, which is suitable for this situation.",
+        "actionability": "The reply doesn't provide clear next steps, but it does ask the customer for more information, which is a necessary step in finding a solution."
       },
-      "verdict": "Usable after light edits, as it's mostly correct but could be more direct and helpful.",
+      "verdict": "Usable after light edits, as it needs to be more specific about the downgrading process and provide clear next steps.",
       "overall": 4.15,
       "pass": true,
-      "semantic_similarity": 0.7385,
+      "semantic_similarity": 0.7792,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,
@@ -610,43 +610,43 @@
     "subject": "Was our data part of the breach in the news?",
     "email": "I saw news about a breach affecting SaaS vendors. Was our data affected? We need to know before informing our customers.",
     "gold_reply": "Hi,\n\nThis is exactly the right thing to ask, and I want to give you a straight, careful answer rather than a reflexive 'you're fine'. Based on our current security review, your account shows no signs of unauthorised access, and the incident in the news does not involve our systems. I don't want you acting on my word alone for something this serious: I'm looping in our security team to send you an official statement you can share with your customers, including the specific controls (encryption, access logs) relevant to your account. If anything in that review changes, you'll hear from us first and fast. Would a call with our security lead help you brief your customers?\n\nBest,\nSupport Team",
-    "generated_reply": "Hi,\n\nSorry to hear about the breach. We take data security seriously and can confirm that our infrastructure and data storage are separate from the affected vendor. However, we can't disclose whether specific data was accessed without a thorough investigation. I've escalated this to our security team, and they'll be in touch with you shortly to provide more information and answer any questions you may have.\n\nBest,\nSupport Team",
+    "generated_reply": "Hi,\n\nSorry to hear you're concerned about the breach. We've checked our security logs and can confirm that our infrastructure wasn't compromised in the incident. Our data storage and processing are segregated from the affected system, and we've had no indication of unauthorized access to our environment. If you'd like, I can provide more information on our security practices and the measures we take to protect your data.\n\nBest,\nSupport Team",
     "retrieved": [
       {
         "id": "ref-022",
         "category": "howto",
-        "similarity": 0.404
-      },
-      {
-        "id": "ref-030",
-        "category": "onboarding",
-        "similarity": 0.192
+        "similarity": 0.158
       },
       {
         "id": "ref-006",
         "category": "cancellation",
-        "similarity": 0.192
+        "similarity": 0.08
+      },
+      {
+        "id": "ref-030",
+        "category": "onboarding",
+        "similarity": 0.074
       }
     ],
     "evaluation": {
       "dimensions": {
         "intent_addressed": 4,
-        "factual_grounding": 4,
+        "factual_grounding": 5,
         "completeness": 3,
         "tone": 5,
         "actionability": 4
       },
       "reasons": {
-        "intent_addressed": "It directly addresses the customer's question about the breach, but doesn't provide a clear answer.",
-        "factual_grounding": "It claims our infrastructure and data storage are separate, but doesn't confirm or deny specific data access.",
-        "completeness": "It doesn't provide a clear timeline for when the customer will hear from the security team or receive more information.",
-        "tone": "It's professional and empathetic, acknowledging the customer's concern.",
-        "actionability": "It provides a clear next step (waiting to hear from the security team), but doesn't give the customer a sense of control or resolution."
+        "intent_addressed": "The reply directly addresses the customer's concern about the breach, but doesn't explicitly confirm or deny the involvement of the customer's data.",
+        "factual_grounding": "The reply's claims are consistent with the context and the Gold reply, with no invented facts or policies.",
+        "completeness": "The reply doesn't explicitly mention looping in the security team to send an official statement, which is a key aspect of the Gold reply.",
+        "tone": "The reply is professional, empathetic, and appropriate for the situation, with a clear apology for the customer's concern.",
+        "actionability": "The reply provides clear information on the security practices and measures, but doesn't explicitly offer a call with the security lead or a clear next step."
       },
-      "verdict": "Usable after light edits, as it's mostly correct but could benefit from more clarity and specificity.",
-      "overall": 3.9,
+      "verdict": "Usable after light edits, as it needs to be more explicit about the involvement of the customer's data and the next steps.",
+      "overall": 4.15,
       "pass": true,
-      "semantic_similarity": 0.8217,
+      "semantic_similarity": 0.8476,
       "similarity_method": "nim-embed",
       "weights": {
         "intent_addressed": 0.3,

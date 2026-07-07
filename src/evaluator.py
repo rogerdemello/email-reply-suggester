@@ -110,11 +110,9 @@ def semantic_similarity(candidate: str, gold: str) -> dict:
     embs = llm.embed([candidate, gold], input_type="passage")
     if embs is not None:
         return {"similarity": round(_cosine(embs[0], embs[1]), 4), "method": "nim-embed"}
-    # Fallback: TF-IDF cosine (offline, deterministic)
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.metrics.pairwise import cosine_similarity
-    m = TfidfVectorizer(stop_words="english").fit_transform([candidate, gold])
-    return {"similarity": round(float(cosine_similarity(m[0], m[1])[0][0]), 4),
+    # Fallback: pure-Python TF-IDF cosine (offline, deterministic)
+    from .textsim import pairwise_cosine
+    return {"similarity": round(pairwise_cosine(candidate, gold), 4),
             "method": "tfidf-fallback"}
 
 

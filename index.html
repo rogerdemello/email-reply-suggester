@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI Email Suggested-Response System</title>
+<style>
+  :root {
+    --bg:#0b1020; --panel:#141b2f; --panel2:#1b2540; --ink:#e8ecf6; --muted:#9aa6c4;
+    --line:#26314f; --accent:#5b8cff; --good:#37d39b; --warn:#ffcc66; --bad:#ff6b6b;
+    --radius:14px;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; font:15px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,#0b1020,#0e1428 60%,#0b1020); color:var(--ink);
+    min-height:100vh;
+  }
+  .wrap { max-width:920px; margin:0 auto; padding:32px 20px 80px; }
+  header h1 { margin:0 0 6px; font-size:24px; letter-spacing:-.02em; }
+  header p { margin:0; color:var(--muted); }
+  .grid { display:grid; grid-template-columns:1fr; gap:20px; margin-top:26px; }
+  .card {
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px;
+  }
+  label { display:block; font-size:12px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--muted); margin:0 0 6px; }
+  input[type=text], textarea, select {
+    width:100%; background:var(--panel2); border:1px solid var(--line); color:var(--ink);
+    border-radius:10px; padding:11px 12px; font:inherit; resize:vertical;
+  }
+  textarea { min-height:130px; }
+  .row { margin-bottom:16px; }
+  .btns { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  button {
+    background:var(--accent); color:#fff; border:0; border-radius:10px; padding:11px 18px;
+    font:inherit; font-weight:600; cursor:pointer;
+  }
+  button.secondary { background:transparent; border:1px solid var(--line); color:var(--muted); }
+  button:disabled { opacity:.55; cursor:default; }
+  .hint { color:var(--muted); font-size:13px; }
+  #result { display:none; }
+  .reply {
+    white-space:pre-wrap; background:var(--panel2); border:1px solid var(--line);
+    border-radius:10px; padding:16px; line-height:1.6;
+  }
+  .scorehead { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
+  .big { font-size:40px; font-weight:700; letter-spacing:-.03em; }
+  .pill { font-size:12px; padding:3px 10px; border-radius:999px; border:1px solid var(--line); }
+  .pass { color:var(--good); border-color:#1f5a45; background:#0f2a22; }
+  .fail { color:var(--bad); border-color:#5a2626; background:#2a1414; }
+  .dims { margin-top:16px; display:grid; gap:12px; }
+  .dim { }
+  .dim .top { display:flex; justify-content:space-between; font-size:13px; }
+  .dim .name { font-weight:600; }
+  .bar { height:8px; background:var(--panel2); border-radius:99px; overflow:hidden; margin:6px 0 4px; }
+  .bar > i { display:block; height:100%; background:var(--accent); }
+  .dim .why { color:var(--muted); font-size:13px; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .chip { font-size:12px; color:var(--muted); background:var(--panel2); border:1px solid var(--line);
+    padding:4px 9px; border-radius:99px; }
+  .err { color:var(--bad); }
+  .foot { margin-top:26px; color:var(--muted); font-size:13px; text-align:center; }
+  a { color:var(--accent); text-decoration:none; }
+  .spin { width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;
+    border-radius:50%; display:inline-block; animation:sp .7s linear infinite; vertical-align:-2px; }
+  @keyframes sp { to { transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>AI Email Suggested-Response System</h1>
+    <p>Paste an incoming support email. The system retrieves similar past emails, drafts a
+       suggested reply with an LLM, and scores its quality across five dimensions.</p>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <div class="row">
+        <label for="example">Try an example</label>
+        <select id="example">
+          <option value="">-- choose an example, or write your own below --</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="subject">Subject</label>
+        <input id="subject" type="text" placeholder="e.g. Charged twice this month" />
+      </div>
+      <div class="row">
+        <label for="email">Incoming email</label>
+        <textarea id="email" placeholder="Paste the customer's email here..."></textarea>
+      </div>
+      <div class="btns">
+        <button id="go">Generate suggested reply</button>
+        <span id="status" class="hint"></span>
+      </div>
+    </div>
+
+    <div class="card" id="result">
+      <label>Suggested reply</label>
+      <div class="reply" id="reply"></div>
+      <div class="chips" id="retrieved"></div>
+
+      <div style="margin-top:22px">
+        <label>Accuracy evaluation</label>
+        <div class="scorehead">
+          <span class="big" id="overall">-</span>
+          <span class="hint">weighted overall / 5</span>
+          <span class="pill" id="passpill"></span>
+          <span class="hint" id="sim"></span>
+        </div>
+        <div class="dims" id="dims"></div>
+        <p class="hint" id="refnote" style="margin-top:14px"></p>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">
+    Retrieval-augmented generation + LLM-as-judge rubric on NVIDIA NIM.
+    <a href="https://github.com/rogerdemello/email-reply-suggester" target="_blank">Source on GitHub</a>
+  </p>
+</div>
+
+<script>
+const EXAMPLES = [
+  { subject:"Charged twice this month",
+    email:"I see two identical charges of $199 on my statement this month. I only have one subscription. Please explain." },
+  { subject:"Export button not working",
+    email:"The CSV export button does nothing when I click it. I'm on Chrome. This is blocking my report." },
+  { subject:"Very frustrated with repeated downtime",
+    email:"This is the third outage this month. We're paying for a reliable service and not getting it. Extremely disappointed." },
+  { subject:"Pricing for 50 users",
+    email:"We're evaluating your product for a team of 50. What pricing options do you have at that scale?" },
+  { subject:"Need Salesforce integration",
+    email:"Do you integrate with Salesforce? It's a dealbreaker for us if you don't." },
+];
+
+const $ = id => document.getElementById(id);
+const sel = $("example");
+EXAMPLES.forEach((e,i) => {
+  const o = document.createElement("option"); o.value = i; o.textContent = e.subject; sel.appendChild(o);
+});
+sel.onchange = () => {
+  if (sel.value === "") return;
+  const e = EXAMPLES[+sel.value]; $("subject").value = e.subject; $("email").value = e.email;
+};
+
+const DIM_LABELS = {
+  intent_addressed:"Intent addressed", factual_grounding:"Factual grounding",
+  completeness:"Completeness", tone:"Tone", actionability:"Actionability"
+};
+
+function scoreColor(v){ return v>=4 ? "var(--good)" : v>=3 ? "var(--warn)" : "var(--bad)"; }
+
+$("go").onclick = async () => {
+  const subject = $("subject").value.trim();
+  const email = $("email").value.trim();
+  if (!email) { $("status").innerHTML = '<span class="err">Please enter an email.</span>'; return; }
+  $("go").disabled = true;
+  $("status").innerHTML = '<span class="spin"></span> Generating and scoring (a few seconds)...';
+  $("result").style.display = "none";
+  try {
+    const res = await fetch("/api/suggest", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ subject, email })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || ("HTTP "+res.status));
+
+    $("reply").textContent = data.reply;
+    $("retrieved").innerHTML = (data.retrieved||[]).map(r =>
+      `<span class="chip">grounded on ${r.id} (${r.category}, sim ${r.similarity})</span>`).join("");
+
+    const ev = data.evaluation || {};
+    $("overall").textContent = ev.overall ?? "-";
+    const pass = ev.pass;
+    const pill = $("passpill");
+    pill.textContent = pass ? "PASS" : "NEEDS WORK";
+    pill.className = "pill " + (pass ? "pass" : "fail");
+    $("sim").textContent = ev.semantic_similarity != null
+      ? `similarity to reference ${ev.semantic_similarity} (${ev.similarity_method||""})` : "";
+
+    const dims = ev.dimensions || {}, reasons = ev.reasons || {};
+    $("dims").innerHTML = Object.keys(DIM_LABELS).map(k => {
+      const v = dims[k] ?? 0;
+      return `<div class="dim">
+        <div class="top"><span class="name">${DIM_LABELS[k]}</span><span>${v}/5</span></div>
+        <div class="bar"><i style="width:${v/5*100}%;background:${scoreColor(v)}"></i></div>
+        <div class="why">${reasons[k]||""}</div></div>`;
+    }).join("");
+    $("refnote").textContent = data.reference_note || "";
+    $("result").style.display = "block";
+    $("status").textContent = "";
+  } catch (e) {
+    $("status").innerHTML = '<span class="err">'+ (e.message||e) +'</span>';
+  } finally {
+    $("go").disabled = false;
+  }
+};
+</script>
+</body>
+</html>
