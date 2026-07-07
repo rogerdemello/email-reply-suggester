@@ -12,7 +12,7 @@ The results committed in this repo come from a real live NVIDIA NIM run
 (`meta/llama-3.1-8b-instruct`): **overall 4.09 / 5, 100% pass rate, mean similarity
 0.82**, with the full metric-validation suite passing (details in section 3).
 
-**Live demo: https://email-reply-suggester-kfga.vercel.app/** — paste an email and see
+**Live demo: https://email-reply-suggester-kfga.vercel.app/** - paste an email and see
 the suggested reply and its per-dimension quality scores in the browser (a web page plus
 a serverless API on Vercel). See [Deployment](#deployment) to run your own.
 
