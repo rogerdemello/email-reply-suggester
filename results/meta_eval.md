@@ -6,10 +6,10 @@ Mean overall score (1-5) by known-quality tier:
 
 | Tier | Mean overall |
 |------|-------------|
-| gold | 3.487 |
-| truncated | 2.113 |
-| generic | 1.667 |
-| offtopic | 1.946 |
+| gold | 4.346 |
+| truncated | 4.15 |
+| generic | 3.0 |
+| offtopic | 3.013 |
 
 Expected order: `gold > truncated > {generic, offtopic}`  ->  **ordering holds: True**
 
@@ -17,12 +17,12 @@ If the metric couldn't separate these tiers it wouldn't be measuring quality. Th
 
 ## 2. Convergent validity
 
-Spearman rho (LLM judge vs embedding similarity), n=12: **0.885**
+Spearman rho (LLM judge vs embedding similarity), n=12: **0.596**
 
 _positive-but-imperfect correlation is healthy: agree on direction, judge captures quality similarity misses_
 
 ## 3. Reliability (self-consistency)
 
-Mean |overall_run1 - overall_run2| at temperature 0: **0.0**
+Mean |overall_run1 - overall_run2| at temperature 0: **0.121**
 
 _lower is better; ~0 means the metric is stable, not noise_

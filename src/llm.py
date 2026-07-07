@@ -28,7 +28,8 @@ def _get_client():
                 "NVIDIA_API_KEY is not set. Add it to .env (see .env.example) "
                 "to run live, or use the cached/offline path (run.py --offline)."
             )
-        _client = OpenAI(api_key=config.NVIDIA_API_KEY, base_url=config.NVIDIA_BASE_URL)
+        _client = OpenAI(api_key=config.NVIDIA_API_KEY, base_url=config.NVIDIA_BASE_URL,
+                         timeout=config.REQUEST_TIMEOUT, max_retries=2)
     return _client
 
 

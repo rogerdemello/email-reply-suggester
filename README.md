@@ -16,23 +16,24 @@ reflects real quality, not just a number.**
 pip install -r requirements.txt
 python data/build_dataset.py           # (re)generate the dataset
 
-# Option A — see it run end-to-end with NO key (deterministic mock backend):
-USE_MOCK=1 python run.py --meta        # generates replies, scores them, validates the metric
-
-# Option B — real results with NVIDIA NIM:
+# Option A — real results with NVIDIA NIM (what the committed results/ come from):
 cp .env.example .env                    # then put your key in NVIDIA_API_KEY
 python run.py --meta                    # live generation + evaluation + metric validation
 
-# View committed example results without running anything:
+# Option B — run end-to-end with NO key (deterministic mock backend):
+USE_MOCK=1 python run.py --meta         # verifies the plumbing without credentials
+
+# View the committed live results without running anything:
 python run.py --offline
 ```
 
 Outputs land in `results/`: `report.md` (leaderboard + per-response "why"),
 `scores.csv`, `responses.json`, and `meta_eval.md` (the metric-validation suite).
 
-> The results committed in this repo were produced by the **mock** backend so the
-> pipeline is verifiable without credentials. They prove the plumbing, not real model
-> quality — every mock artifact is banner-stamped. Add a NIM key for real numbers.
+> The results committed in this repo (`results/`) are from a **real live NVIDIA NIM
+> run** (`meta/llama-3.1-8b-instruct`): **overall 4.13/5, 100% pass rate, mean
+> similarity 0.81**, and the metric-validation suite passes (see below). If you don't
+> have a key, `USE_MOCK=1` still runs the whole pipeline via a deterministic stand-in.
 
 ---
 
@@ -71,7 +72,11 @@ data, which is exactly what lets the evaluator check factual grounding.
 ## 2. The response generator (Gen AI)
 
 **Approach: retrieval-augmented few-shot prompting** over an LLM served by NVIDIA NIM
-(`meta/llama-3.3-70b-instruct` by default, OpenAI-compatible endpoint).
+(`meta/llama-3.1-8b-instruct` by default, OpenAI-compatible endpoint — chosen because
+it stays warm on NIM's serverless tier and responds in ~1-2s, so the full pipeline runs
+reliably end-to-end; a larger model like `meta/llama-3.3-70b-instruct` raises quality
+but can cold-start for minutes on the free tier — set `GEN_MODEL`/`JUDGE_MODEL` to use
+one if your tier keeps it warm).
 
 For each new email we (1) retrieve the `k` most similar past emails (TF-IDF cosine —
 deterministic, offline, free), and (2) show them to the LLM as worked
@@ -173,6 +178,11 @@ This is the honest core of the submission: the accuracy system is not just "ask 
 for a score" — it's a score whose validity is **measured** (it separates good from bad),
 **cross-checked** (two signals agree), and **stable** (low variance).
 
+**On the committed live run** (`results/meta_eval.md`): discrimination holds —
+`gold 4.35 > truncated 4.15 > {generic 3.00, offtopic 3.01}`; convergent validity
+Spearman ρ = **0.60** (healthy positive-but-imperfect); reliability = **0.12** mean
+change on re-run (stable). The metric behaves the way a trustworthy metric should.
+
 ---
 
 ## Repository layout
@@ -189,7 +199,7 @@ src/evaluator.py        # 5-dimension LLM-judge rubric + semantic similarity  <-
 src/meta_eval.py        # validates the metric (controls, convergence, reliability)
 src/mock_backend.py     # deterministic no-key stand-in for smoke tests
 run.py                  # end-to-end: generate -> evaluate -> report [-> meta-eval]
-results/                # committed example outputs (mock backend, banner-stamped)
+results/                # committed outputs from a real live NIM run (banner-stamped)
 ```
 
 ## Configuration
@@ -209,8 +219,10 @@ All via env / `.env` (see `.env.example`): `NVIDIA_API_KEY`, `GEN_MODEL`,
   human ratings to calibrate — a natural next step.
 - **Small test set (12).** Enough to demonstrate the method and its validation; a
   production rollout would scale this and track score drift over time.
-- **The committed `results/` are from the mock backend** (heuristic, not a model) so
-  the repo runs without credentials. Real quality requires a NIM key.
+- **Model choice was constrained by the NIM tier.** The default 8B model keeps the run
+  fast and reproducible; the 70B gave better replies in spot checks but cold-started
+  past practical timeouts on this key, so 8B is the honest default. The committed
+  `results/` reflect the 8B run.
 
 ## How AI tools were used
 
