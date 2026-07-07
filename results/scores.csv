@@ -1,0 +1,13 @@
+id,category,intent_addressed,factual_grounding,completeness,tone,actionability,overall,pass,semantic_similarity
+test-001,billing,1,1,1,5,5,2.0,False,0.1728
+test-002,bug,1,1,1,4,5,1.9,False,0.0785
+test-003,refund,1,1,1,5,5,2.0,False,0.1332
+test-004,access,1,1,1,5,5,2.0,False,0.0935
+test-005,sales,1,1,1,5,5,2.0,False,0.1569
+test-006,feature_request,1,1,1,5,5,2.0,False,0.0798
+test-007,complaint,1,1,1,5,5,2.0,False,0.0802
+test-008,howto,1,1,1,4,5,1.9,False,0.0756
+test-009,outage,2,2,2,5,5,2.75,False,0.2046
+test-010,integration,1,1,1,5,5,2.0,False,0.0751
+test-011,cancellation,1,1,1,5,5,2.0,False,0.1498
+test-012,security,1,1,1,5,5,2.0,False,0.0861

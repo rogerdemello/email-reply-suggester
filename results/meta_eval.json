@@ -1,0 +1,21 @@
+{
+  "discriminative_validity": {
+    "tier_mean_overall": {
+      "gold": 3.487,
+      "truncated": 2.113,
+      "generic": 1.667,
+      "offtopic": 1.946
+    },
+    "expected_order": "gold > truncated > {generic, offtopic}",
+    "ordering_holds": true
+  },
+  "convergent_validity": {
+    "spearman_judge_vs_similarity": 0.885,
+    "n": 12,
+    "note": "positive-but-imperfect correlation is healthy: agree on direction, judge captures quality similarity misses"
+  },
+  "reliability": {
+    "mean_abs_overall_delta_on_rerun": 0.0,
+    "note": "lower is better; ~0 means the metric is stable, not noise"
+  }
+}
