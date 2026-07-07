@@ -297,7 +297,7 @@ function render(data){
       <div class="scoretop">
         <div class="bignum" style="color:${oc}">${overall}<small>/5</small></div>
         <div class="scoremain">
-          <span class="pill ${pass?'pass':'fail'}">${pass?'PASS — READY TO SEND':'NEEDS REVIEW'}</span>
+          <span class="pill ${pass?'pass':'fail'}">${pass?'PASS - READY TO SEND':'NEEDS REVIEW'}</span>
           <div class="meter"><i data-w="${pct}" style="background:${oc}"></i>
             <div class="ticks"><span></span><span></span><span></span><span></span><span></span></div></div>
           <p class="verdict">${esc(ev.verdict||"")}</p>
