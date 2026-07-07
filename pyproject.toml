@@ -1,3 +1,18 @@
+[project]
+name = "email-reply-suggester"
+version = "0.1.0"
+description = "AI email suggested-response system with a validated accuracy evaluation"
+requires-python = ">=3.9"
+dependencies = [
+    "openai>=1.30.0",
+    "python-dotenv>=1.0.0",
+]
+
+# This repo is an app, not an installable package, so uv should only install the
+# dependencies above and not try to build the project itself (no build backend needed).
+[tool.uv]
+package = false
+
 [tool.vercel]
 # Vercel's Python runtime uses a single declared entrypoint. Our handler
 # (a BaseHTTPRequestHandler subclass) serves both the UI and the JSON API.
