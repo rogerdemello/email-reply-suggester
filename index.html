@@ -3,202 +3,203 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI Email Suggested-Response System</title>
+<title>Email Suggested-Response System</title>
 <meta name="description" content="Generate a grounded suggested reply to a support email and score its quality across five dimensions." />
 <style>
   :root {
-    --bg:#f4f6fb; --bg2:#eaeefc; --card:#ffffff; --ink:#101426; --muted:#5b647d;
-    --line:#e5e9f2; --line2:#eef1f8; --accent:#4f6bff; --accent-ink:#ffffff;
-    --good:#12b981; --warn:#eab308; --bad:#ef4444; --chip:#f1f4fb;
-    --shadow:0 1px 2px rgba(16,20,38,.04),0 8px 30px rgba(16,20,38,.06);
-    --radius:16px;
+    --paper:#f5f4ef; --card:#ffffff; --ink:#1a1712; --muted:#6d6659; --faint:#8f887b;
+    --line:#e2ded3; --line2:#eeeae0; --fill:#efece3;
+    --accent:#1f6f43; --accent-ink:#ffffff;
+    --good:#1f6f43; --warn:#9a6b00; --bad:#a12a1e;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg:#0a0e1a; --bg2:#0c1122; --card:#121829;
-      --ink:#eef1f9; --muted:#9aa4bf; --line:#212a41; --line2:#1a2135; --accent:#6a86ff;
-      --chip:#182036; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px rgba(0,0,0,.35);
+      --paper:#141310; --card:#1c1a15; --ink:#ece8de; --muted:#a49c8c; --faint:#867e6f;
+      --line:#2c2921; --line2:#241f18; --fill:#22201a;
+      --accent:#59b083; --good:#59b083; --warn:#d0a24b; --bad:#d9705f;
     }
   }
   * { box-sizing:border-box; }
   html,body { margin:0; }
   body {
-    font:15px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-    color:var(--ink); background:
-      radial-gradient(1200px 600px at 80% -10%, var(--bg2), transparent 60%),
-      radial-gradient(900px 500px at -10% 10%, var(--bg2), transparent 55%),
-      var(--bg);
-    min-height:100vh; -webkit-font-smoothing:antialiased;
+    font:15px/1.62 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); background:var(--paper); min-height:100vh; -webkit-font-smoothing:antialiased;
   }
-  .wrap { max-width:1160px; margin:0 auto; padding:28px 22px 80px; }
+  .wrap { max-width:1120px; margin:0 auto; padding:0 22px 80px; }
+
+  .eyebrow { font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--faint); }
 
   /* Header */
-  header { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; }
-  .brand { display:flex; gap:13px; align-items:center; }
-  .logo { width:42px; height:42px; border-radius:12px; flex:0 0 auto;
-    background:linear-gradient(140deg,#4f6bff,#8a5bff); display:grid; place-items:center;
-    box-shadow:0 6px 18px rgba(79,107,255,.35); }
-  .logo svg { width:22px; height:22px; }
-  h1 { font-size:19px; margin:0; letter-spacing:-.02em; }
-  .brand p { margin:2px 0 0; color:var(--muted); font-size:13px; }
-  .badges { display:flex; gap:8px; flex-wrap:wrap; }
-  .badge { font-size:12px; color:var(--muted); background:var(--card); border:1px solid var(--line);
-    padding:6px 11px; border-radius:999px; box-shadow:var(--shadow); }
-  .badge b { color:var(--ink); font-weight:600; }
+  header { border-bottom:1px solid var(--line); padding:22px 0 20px; margin-bottom:30px;
+    display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; }
+  .brand { display:flex; align-items:center; gap:13px; }
+  .mark { width:38px; height:38px; border:1px solid var(--ink); border-radius:6px; flex:0 0 auto;
+    display:grid; place-items:center; }
+  .mark svg { width:19px; height:19px; }
+  h1 { font-size:17px; margin:0; letter-spacing:-.01em; font-weight:650; }
+  .brand p { margin:1px 0 0; color:var(--muted); font-size:13px; }
+  .meta { font-family:var(--mono); font-size:11.5px; color:var(--faint); text-align:right; line-height:1.7; }
+  .meta b { color:var(--muted); font-weight:600; }
 
   /* Layout */
-  .cols { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:22px; margin-top:26px; }
-  @media (max-width:900px){ .cols { grid-template-columns:1fr; } }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-    box-shadow:var(--shadow); }
-  .pad { padding:20px; }
-  .card h2 { font-size:12px; text-transform:uppercase; letter-spacing:.09em; color:var(--muted);
-    margin:0 0 14px; font-weight:700; }
+  .cols { display:grid; grid-template-columns:minmax(0,0.92fr) minmax(0,1.08fr); gap:26px; }
+  @media (max-width:880px){ .cols { grid-template-columns:1fr; gap:22px; } }
+  .panel { background:var(--card); border:1px solid var(--line); border-radius:8px; }
+  .phead { padding:14px 18px; border-bottom:1px solid var(--line2); }
+  .pbody { padding:18px; }
 
   label { display:block; font-size:12.5px; font-weight:600; color:var(--muted); margin:0 0 7px; }
   input[type=text], textarea {
     width:100%; background:var(--card); border:1px solid var(--line); color:var(--ink);
-    border-radius:11px; padding:12px 13px; font:inherit; transition:border-color .15s, box-shadow .15s;
-  }
-  input[type=text]:focus, textarea:focus { outline:none; border-color:var(--accent);
-    box-shadow:0 0 0 3px rgba(79,107,255,.15); }
-  textarea { min-height:150px; resize:vertical; }
+    border-radius:6px; padding:11px 12px; font:inherit; }
+  input[type=text]:focus, textarea:focus { outline:none; border-color:var(--accent); }
+  textarea { min-height:158px; resize:vertical; }
   .field { margin-bottom:16px; }
 
-  .exlabel { display:flex; align-items:center; justify-content:space-between; }
-  .chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
-  .exchip { font-size:12.5px; cursor:pointer; background:var(--chip); border:1px solid var(--line);
-    color:var(--ink); padding:7px 12px; border-radius:999px; transition:all .15s; }
-  .exchip:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
+  .exrow { display:flex; gap:7px; flex-wrap:wrap; margin:9px 0 20px; }
+  .exchip { font-size:12.5px; cursor:pointer; background:var(--card); border:1px solid var(--line);
+    color:var(--ink); padding:6px 11px; border-radius:5px; }
+  .exchip:hover { border-color:var(--accent); color:var(--accent); }
 
-  button.primary {
-    width:100%; background:linear-gradient(135deg,#4f6bff,#6a5bff); color:#fff; border:0;
-    border-radius:12px; padding:14px 18px; font:inherit; font-weight:650; cursor:pointer;
-    box-shadow:0 8px 22px rgba(79,107,255,.32); transition:transform .12s, box-shadow .12s, opacity .12s;
-  }
-  button.primary:hover:not(:disabled){ transform:translateY(-1px); box-shadow:0 12px 26px rgba(79,107,255,.4); }
-  button.primary:disabled { opacity:.6; cursor:default; box-shadow:none; }
-  .status { margin-top:12px; min-height:20px; font-size:13.5px; color:var(--muted); }
-  .status .spin { width:14px;height:14px;border:2px solid rgba(127,127,127,.35);border-top-color:var(--accent);
-    border-radius:50%; display:inline-block; animation:sp .7s linear infinite; vertical-align:-2px; margin-right:7px; }
+  button.primary { width:100%; background:var(--ink); color:var(--paper); border:1px solid var(--ink);
+    border-radius:6px; padding:13px 18px; font:inherit; font-weight:600; cursor:pointer; }
+  button.primary:hover:not(:disabled){ opacity:.9; }
+  button.primary:disabled { opacity:.5; cursor:default; }
+  @media (prefers-color-scheme: dark){ button.primary { background:var(--ink); color:var(--paper); } }
+
+  .status { margin-top:12px; min-height:20px; font-size:13px; color:var(--muted); font-family:var(--mono); }
+  .status .spin { width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--accent);
+    border-radius:50%; display:inline-block; animation:sp .7s linear infinite; vertical-align:-1px; margin-right:8px; }
   .status.err { color:var(--bad); }
   @keyframes sp { to { transform:rotate(360deg); } }
 
-  /* Output column */
-  #out { display:flex; flex-direction:column; gap:22px; }
-  .empty { display:grid; place-items:center; text-align:center; padding:54px 24px; color:var(--muted); }
-  .empty .ic { width:56px;height:56px;border-radius:16px;background:var(--chip);border:1px solid var(--line);
-    display:grid;place-items:center;margin-bottom:14px; }
-  .empty h3 { margin:0 0 6px; color:var(--ink); font-size:15px; }
-  .empty p { margin:0; font-size:13.5px; max-width:320px; }
+  /* Output */
+  #out { display:block; }
+  .empty { text-align:center; padding:50px 22px; color:var(--muted); }
+  .empty .ic { width:46px;height:46px;border:1px solid var(--line);border-radius:8px;display:grid;
+    place-items:center;margin:0 auto 14px; color:var(--faint); }
+  .empty h3 { margin:0 0 6px; color:var(--ink); font-size:15px; font-weight:600; }
+  .empty p { margin:0 auto; font-size:13.5px; max-width:330px; }
 
-  .replybox { border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .replybox { border:1px solid var(--line); border-radius:6px; overflow:hidden; }
   .replybar { display:flex; align-items:center; justify-content:space-between; gap:10px;
-    padding:10px 13px; background:var(--line2); border-bottom:1px solid var(--line); font-size:12.5px; color:var(--muted); }
-  .replybar .to { display:flex; align-items:center; gap:8px; }
-  .dot { width:8px;height:8px;border-radius:50%;background:var(--good); box-shadow:0 0 0 3px rgba(18,185,129,.15); }
-  .copy { border:1px solid var(--line); background:var(--card); color:var(--ink); font:inherit; font-size:12px;
-    padding:5px 10px; border-radius:8px; cursor:pointer; }
+    padding:9px 12px; background:var(--fill); border-bottom:1px solid var(--line);
+    font-family:var(--mono); font-size:11.5px; color:var(--muted); }
+  .replybar .to { text-transform:uppercase; letter-spacing:.08em; }
+  .copy { border:1px solid var(--line); background:var(--card); color:var(--ink); font-family:var(--mono);
+    font-size:11px; padding:4px 9px; border-radius:5px; cursor:pointer; }
   .copy:hover { border-color:var(--accent); color:var(--accent); }
-  .reply { white-space:pre-wrap; padding:16px; line-height:1.65; }
+  .reply { white-space:pre-wrap; padding:16px; line-height:1.66; }
 
-  .ground { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:14px; }
-  .ground .gl { font-size:12px; color:var(--muted); }
-  .gchip { font-size:11.5px; color:var(--muted); background:var(--chip); border:1px solid var(--line);
-    padding:4px 9px; border-radius:999px; }
+  .ground { display:flex; gap:7px; flex-wrap:wrap; align-items:center; margin-top:13px; }
+  .ground .gl { font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); }
+  .gchip { font-family:var(--mono); font-size:11px; color:var(--muted); background:var(--fill);
+    border:1px solid var(--line); padding:3px 8px; border-radius:4px; }
 
-  /* Score header */
-  .scorewrap { display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
-  .ring { --p:0; width:104px; height:104px; border-radius:50%; flex:0 0 auto; display:grid; place-items:center;
-    background:conic-gradient(var(--rc,var(--accent)) calc(var(--p)*1%), var(--line2) 0); position:relative; }
-  .ring::before { content:""; position:absolute; inset:9px; border-radius:50%; background:var(--card); }
-  .ring .rv { position:relative; text-align:center; line-height:1.1; }
-  .ring .rv b { font-size:26px; letter-spacing:-.02em; }
-  .ring .rv span { font-size:11px; color:var(--muted); display:block; }
-  .verdict { flex:1; min-width:200px; }
-  .pill { display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.03em; padding:4px 11px; border-radius:999px; }
-  .pass { color:#0b7a55; background:rgba(18,185,129,.14); }
-  .fail { color:#b4231b; background:rgba(239,68,68,.14); }
-  .verdict p { margin:9px 0 0; font-size:13.5px; color:var(--muted); }
-  .simline { margin-top:6px; font-size:12.5px; color:var(--muted); }
+  /* Scorecard */
+  .score { margin-top:22px; border:1px solid var(--line); border-radius:6px; padding:16px; }
+  .scoretop { display:flex; align-items:flex-start; gap:18px; }
+  .bignum { font-family:var(--mono); font-size:44px; line-height:1; font-weight:600; letter-spacing:-.02em; }
+  .bignum small { font-size:16px; color:var(--faint); font-weight:500; }
+  .scoremain { flex:1; min-width:0; }
+  .pill { display:inline-block; font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.05em;
+    padding:3px 9px; border-radius:4px; border:1px solid; }
+  .pass { color:var(--good); border-color:var(--good); }
+  .fail { color:var(--bad); border-color:var(--bad); }
+  .meter { height:6px; background:var(--line2); border-radius:2px; overflow:hidden; margin:12px 0 0; position:relative; }
+  .meter > i { display:block; height:100%; width:0; transition:width .5s ease; }
+  .meter .ticks { position:absolute; inset:0; display:flex; }
+  .meter .ticks span { flex:1; border-right:1px solid var(--paper); }
+  .meter .ticks span:last-child { border-right:0; }
+  .verdict { margin:11px 0 0; font-size:13.5px; color:var(--muted); }
+  .simline { font-family:var(--mono); margin-top:8px; font-size:11.5px; color:var(--faint); }
 
-  /* Dimensions */
-  .dims { margin-top:20px; display:flex; flex-direction:column; gap:15px; }
-  .dim .top { display:flex; justify-content:space-between; align-items:baseline; font-size:13.5px; }
-  .dim .nm { font-weight:600; display:flex; align-items:center; gap:7px; }
-  .dim .sc { font-variant-numeric:tabular-nums; font-weight:700; }
-  .track { height:7px; background:var(--line2); border-radius:99px; overflow:hidden; margin:7px 0 6px; }
-  .track > i { display:block; height:100%; width:0; border-radius:99px; transition:width .6s cubic-bezier(.2,.7,.2,1); }
+  .dims { margin-top:16px; display:flex; flex-direction:column; }
+  .dim { padding:12px 0; border-top:1px solid var(--line2); }
+  .dim:first-child { border-top:0; }
+  .dim .top { display:flex; justify-content:space-between; align-items:baseline; }
+  .dim .nm { font-weight:600; font-size:13.5px; }
+  .dim .sc { font-family:var(--mono); font-weight:600; }
+  .dim .sc small { color:var(--faint); font-weight:400; }
+  .track { height:4px; background:var(--line2); border-radius:2px; overflow:hidden; margin:8px 0 7px; }
+  .track > i { display:block; height:100%; width:0; transition:width .5s ease; }
   .dim .why { font-size:12.8px; color:var(--muted); }
-  .refnote { margin-top:16px; font-size:12.3px; color:var(--muted); border-top:1px solid var(--line2); padding-top:12px; }
+  .refnote { font-family:var(--mono); margin-top:14px; font-size:11.5px; color:var(--faint);
+    border-top:1px solid var(--line2); padding-top:12px; line-height:1.6; }
 
-  .foot { margin-top:30px; text-align:center; color:var(--muted); font-size:12.8px; }
+  .foot { margin-top:34px; padding-top:20px; border-top:1px solid var(--line);
+    color:var(--faint); font-size:12.5px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
   a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; }
-  .skel { animation:pulse 1.3s ease-in-out infinite; background:var(--line2); border-radius:8px; }
-  @keyframes pulse { 0%,100%{opacity:.55} 50%{opacity:1} }
+  .skel { animation:pulse 1.3s ease-in-out infinite; background:var(--line2); border-radius:3px; }
+  @keyframes pulse { 0%,100%{opacity:.5} 50%{opacity:.9} }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="brand">
-      <div class="logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>
+      <div class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="m3.5 6.5 8.5 6 8.5-6"/>
         </svg>
       </div>
       <div>
-        <h1>AI Email Suggested-Response System</h1>
-        <p>Grounded reply generation, with an accuracy score for every response.</p>
+        <h1>Email Suggested-Response System</h1>
+        <p>Grounded reply generation with an accuracy score for every response.</p>
       </div>
     </div>
-    <div class="badges">
-      <span class="badge">RAG few-shot</span>
-      <span class="badge">LLM-as-judge</span>
-      <span class="badge">on <b>NVIDIA NIM</b></span>
+    <div class="meta">
+      <div><b>retrieval</b> TF-IDF few-shot</div>
+      <div><b>scoring</b> LLM-judge + embedding</div>
+      <div><b>model</b> <span id="model">llama-3.1-8b</span> · NVIDIA NIM</div>
     </div>
   </header>
 
   <div class="cols">
-    <!-- LEFT: compose -->
-    <section class="card pad">
-      <h2>Incoming email</h2>
-      <div class="exlabel"><label style="margin:0">Quick examples</label></div>
-      <div class="chips" id="examples"></div>
-
-      <div class="field">
-        <label for="subject">Subject</label>
-        <input id="subject" type="text" placeholder="e.g. Charged twice this month" />
+    <!-- LEFT -->
+    <section class="panel">
+      <div class="phead"><span class="eyebrow">Incoming email</span></div>
+      <div class="pbody">
+        <label style="margin-bottom:0">Quick examples</label>
+        <div class="exrow" id="examples"></div>
+        <div class="field">
+          <label for="subject">Subject</label>
+          <input id="subject" type="text" placeholder="Charged twice this month" />
+        </div>
+        <div class="field">
+          <label for="email">Message</label>
+          <textarea id="email" placeholder="Paste the customer's email here..."></textarea>
+        </div>
+        <button class="primary" id="go">Generate suggested reply</button>
+        <div class="status" id="status"></div>
       </div>
-      <div class="field">
-        <label for="email">Message</label>
-        <textarea id="email" placeholder="Paste the customer's email here..."></textarea>
-      </div>
-      <button class="primary" id="go">Generate suggested reply</button>
-      <div class="status" id="status"></div>
     </section>
 
-    <!-- RIGHT: output -->
-    <section class="card pad">
-      <h2>Suggested reply &amp; accuracy</h2>
-      <div id="out">
-        <div class="empty" id="empty">
-          <div class="ic">
-            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6"/><path d="M9 17h4"/>
-            </svg>
+    <!-- RIGHT -->
+    <section class="panel">
+      <div class="phead"><span class="eyebrow">Suggested reply &amp; accuracy</span></div>
+      <div class="pbody">
+        <div id="out">
+          <div class="empty" id="empty">
+            <div class="ic">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6"/><path d="M9 17h4"/>
+              </svg>
+            </div>
+            <h3>No reply generated yet</h3>
+            <p>Pick an example or write an email, then generate. You'll get a suggested reply plus a per-dimension quality score with reasons.</p>
           </div>
-          <h3>No reply generated yet</h3>
-          <p>Pick an example or write an email, then hit generate. You'll get a suggested reply and a per-dimension quality score.</p>
         </div>
       </div>
     </section>
   </div>
 
-  <p class="foot">
-    Retrieval-augmented generation grounded in a past-email dataset, scored by an LLM-as-judge rubric plus embedding similarity.
-    &nbsp;·&nbsp; <a href="https://github.com/rogerdemello/email-reply-suggester" target="_blank" rel="noopener">Source &amp; methodology on GitHub</a>
-  </p>
+  <div class="foot">
+    <span>Retrieval-augmented generation over a past-email dataset; scored by an LLM-as-judge rubric and embedding similarity.</span>
+    <a href="https://github.com/rogerdemello/email-reply-suggester" target="_blank" rel="noopener">Source &amp; methodology &rarr;</a>
+  </div>
 </div>
 
 <script>
@@ -230,8 +231,7 @@ const DIM_HELP = {
   actionability:"Clear next steps the customer can act on?"
 };
 
-// example chips
-EXAMPLES.forEach((e,i) => {
+EXAMPLES.forEach(e => {
   const c = document.createElement("button");
   c.className = "exchip"; c.type = "button"; c.textContent = e.subject;
   c.onclick = () => { $("subject").value = e.subject; $("email").value = e.email; $("email").focus(); };
@@ -241,35 +241,26 @@ EXAMPLES.forEach((e,i) => {
 function color(v){ return v>=4 ? "var(--good)" : v>=3 ? "var(--warn)" : "var(--bad)"; }
 function esc(s){ return (s||"").replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
 
-const STAGES = ["Retrieving similar past emails…","Drafting the suggested reply…","Scoring quality across five dimensions…"];
+const STAGES = ["retrieving similar past emails","drafting the suggested reply","scoring across five dimensions"];
 let stageTimer = null;
-
 function setLoading(on){
   const s = $("status");
   if(on){
-    let i = 0; s.className = "status"; s.innerHTML = '<span class="spin"></span>'+STAGES[0];
-    stageTimer = setInterval(()=>{ i=Math.min(i+1,STAGES.length-1); s.innerHTML='<span class="spin"></span>'+STAGES[i]; }, 2600);
+    let i=0; s.className="status"; s.innerHTML='<span class="spin"></span>'+STAGES[0]+"…";
+    stageTimer=setInterval(()=>{ i=Math.min(i+1,STAGES.length-1); s.innerHTML='<span class="spin"></span>'+STAGES[i]+"…"; },2600);
     $("out").innerHTML = skeleton();
-  } else {
-    clearInterval(stageTimer); s.innerHTML="";
-  }
+  } else { clearInterval(stageTimer); s.innerHTML=""; }
 }
-
 function skeleton(){
-  return `<div>
-    <div class="replybox">
-      <div class="replybar"><span class="to"><span class="dot"></span> drafting reply…</span></div>
+  return `<div class="replybox">
+      <div class="replybar"><span class="to">drafting reply</span></div>
       <div class="reply">
-        <div class="skel" style="height:12px;width:92%;margin-bottom:9px"></div>
-        <div class="skel" style="height:12px;width:98%;margin-bottom:9px"></div>
-        <div class="skel" style="height:12px;width:85%;margin-bottom:9px"></div>
-        <div class="skel" style="height:12px;width:70%"></div>
-      </div>
-    </div>
-    <div class="dims" style="margin-top:22px">
-      ${[0,1,2,3,4].map(()=>'<div><div class="skel" style="height:10px;width:40%;margin-bottom:8px"></div><div class="skel" style="height:7px;width:100%"></div></div>').join("")}
-    </div>
-  </div>`;
+        ${["92%","98%","85%","70%"].map(w=>`<div class="skel" style="height:11px;width:${w};margin-bottom:9px"></div>`).join("")}
+      </div></div>
+    <div class="score"><div class="scoretop">
+      <div class="skel" style="height:44px;width:70px"></div>
+      <div class="scoremain"><div class="skel" style="height:14px;width:45%;margin-bottom:12px"></div><div class="skel" style="height:6px;width:100%"></div></div>
+    </div></div>`;
 }
 
 function render(data){
@@ -277,18 +268,18 @@ function render(data){
   const dims = ev.dimensions || {}, reasons = ev.reasons || {};
   const overall = ev.overall ?? 0;
   const pct = Math.max(0, Math.min(100, overall/5*100));
-  const rc = overall>=4 ? "var(--good)" : overall>=3 ? "var(--warn)" : "var(--bad)";
+  const oc = color(overall);
   const pass = ev.pass;
 
   const ground = (data.retrieved||[]).map(r =>
-    `<span class="gchip">${esc(r.id)} · ${esc(r.category)} · sim ${r.similarity}</span>`).join("");
+    `<span class="gchip">${esc(r.id)} · ${esc(r.category)} · ${r.similarity}</span>`).join("");
 
   const dimHtml = Object.keys(DIM_LABELS).map(k => {
     const v = dims[k] ?? 0;
     return `<div class="dim">
       <div class="top">
         <span class="nm" title="${esc(DIM_HELP[k])}">${DIM_LABELS[k]}</span>
-        <span class="sc" style="color:${color(v)}">${v}<span style="color:var(--muted);font-weight:500">/5</span></span>
+        <span class="sc" style="color:${color(v)}">${v}<small>/5</small></span>
       </div>
       <div class="track"><i data-w="${v/5*100}" style="background:${color(v)}"></i></div>
       <div class="why">${esc(reasons[k]||"")}</div>
@@ -297,58 +288,48 @@ function render(data){
 
   $("out").innerHTML = `
     <div class="replybox">
-      <div class="replybar">
-        <span class="to"><span class="dot"></span> Suggested reply to customer</span>
-        <button class="copy" id="copy">Copy</button>
-      </div>
-      <div class="reply" id="replytext">${esc(data.reply)}</div>
+      <div class="replybar"><span class="to">Suggested reply</span><button class="copy" id="copy">copy</button></div>
+      <div class="reply">${esc(data.reply)}</div>
     </div>
-    ${ground ? `<div class="ground"><span class="gl">Grounded on:</span>${ground}</div>` : ""}
+    ${ground ? `<div class="ground"><span class="gl">grounded on</span>${ground}</div>` : ""}
 
-    <div style="margin-top:22px" class="scorewrap">
-      <div class="ring" style="--p:${pct};--rc:${rc}">
-        <div class="rv"><b style="color:${rc}">${overall}</b><span>overall / 5</span></div>
+    <div class="score">
+      <div class="scoretop">
+        <div class="bignum" style="color:${oc}">${overall}<small>/5</small></div>
+        <div class="scoremain">
+          <span class="pill ${pass?'pass':'fail'}">${pass?'PASS — READY TO SEND':'NEEDS REVIEW'}</span>
+          <div class="meter"><i data-w="${pct}" style="background:${oc}"></i>
+            <div class="ticks"><span></span><span></span><span></span><span></span><span></span></div></div>
+          <p class="verdict">${esc(ev.verdict||"")}</p>
+          <div class="simline">similarity to reference ${ev.semantic_similarity ?? "-"} (${esc(ev.similarity_method||"")})</div>
+        </div>
       </div>
-      <div class="verdict">
-        <span class="pill ${pass?'pass':'fail'}">${pass?'PASS · ready to send':'NEEDS REVIEW'}</span>
-        <p>${esc(ev.verdict||"")}</p>
-        <div class="simline">Semantic similarity to reference: <b>${ev.semantic_similarity ?? "-"}</b> <span style="opacity:.7">(${esc(ev.similarity_method||"")})</span></div>
-      </div>
-    </div>
+      <div class="dims">${dimHtml}</div>
+      ${data.reference_note ? `<div class="refnote">${esc(data.reference_note)}</div>` : ""}
+    </div>`;
 
-    <div class="dims">${dimHtml}</div>
-    ${data.reference_note ? `<div class="refnote">${esc(data.reference_note)}</div>` : ""}
-  `;
-
-  // animate bars + copy
-  requestAnimationFrame(()=> document.querySelectorAll(".track > i").forEach(i => i.style.width = i.dataset.w + "%"));
+  requestAnimationFrame(()=> document.querySelectorAll("[data-w]").forEach(i => i.style.width = i.dataset.w + "%"));
   const cp = $("copy");
-  if(cp) cp.onclick = () => {
-    navigator.clipboard.writeText(data.reply).then(()=>{ cp.textContent="Copied ✓"; setTimeout(()=>cp.textContent="Copy",1500); });
-  };
+  if(cp) cp.onclick = () => navigator.clipboard.writeText(data.reply)
+    .then(()=>{ cp.textContent="copied ✓"; setTimeout(()=>cp.textContent="copy",1500); });
 }
 
 $("go").onclick = async () => {
   const subject = $("subject").value.trim();
   const email = $("email").value.trim();
-  if(!email){ $("status").className="status err"; $("status").textContent="Please enter an email message first."; return; }
+  if(!email){ $("status").className="status err"; $("status").textContent="Enter an email message first."; return; }
   $("go").disabled = true; setLoading(true);
   try {
-    const res = await fetch("/api/suggest", {
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ subject, email })
-    });
+    const res = await fetch("/api/suggest", { method:"POST",
+      headers:{"Content-Type":"application/json"}, body: JSON.stringify({ subject, email }) });
     const data = await res.json();
     if(!res.ok) throw new Error(data.error || ("HTTP "+res.status));
     setLoading(false); render(data);
   } catch(e){
-    setLoading(false);
-    $("status").className="status err";
+    setLoading(false); $("status").className="status err";
     $("status").textContent = (""+(e.message||e)).slice(0,240);
-    $("out").innerHTML = `<div class="empty"><div class="ic">⚠️</div><h3>Something went wrong</h3><p>${esc(e.message||e)}</p></div>`;
-  } finally {
-    $("go").disabled = false;
-  }
+    $("out").innerHTML = `<div class="empty"><div class="ic">!</div><h3>Something went wrong</h3><p>${esc(e.message||e)}</p></div>`;
+  } finally { $("go").disabled = false; }
 };
 </script>
 </body>
